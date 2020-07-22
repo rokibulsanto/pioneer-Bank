@@ -36,14 +36,14 @@
             <div class="col-md-4">
                 <div class="Widthdraw status">
                     <h5>Widthdraw</h5>
-                    <h2>$50</h2>
+                    <h2>$<span id="currentWidthdraw">00 </span></h2>
                 </div>
             </div>
 
             <div class="col-md-4">
                 <div class="Balance status">
                     <h5>Balance</h5>
-                    <h2>$1240</h2>
+                    <h2>$<span id="currentBalance">1200 </span></h2>
                 </div>
             </div>
         </div>
@@ -62,9 +62,9 @@
             <div class="col-md-6">
                 <div class="submit-area">
                     <h4>Widthdraw</h4>
-                    <input type="text" class="form-control" placeholder="$ amount you want to widthdraw">
+                    <input  id="widthdrawAmount" type="text" class="form-control" placeholder="$ amount you want to widthdraw">
                     <br>
-                    <button class="btn btn-success">Widthdraw</button>
+                    <button  id="addWidthdraw" class="btn btn-success">Widthdraw</button>
                 </div>
             </div>
            
@@ -72,6 +72,7 @@
     
 
     </div>
+    <!-- End transaction area -->
 
     <script>
         //login button even handaler
@@ -82,27 +83,54 @@
             loginArea.style.display="none";
 
             const transactionArea = document.getElementById('transaction-area');
-            transactionArea.style.display="block";
+            transactionArea.style.display="block";    
         })
 
         //deposite button even handaler
         const depositeBtn = document.getElementById("addDeposit");
         depositeBtn.addEventListener("click",function(){
             
-            const depositeAmount = document.getElementById('depositAmount').value;
-             const depositeNumber = parseFloat(depositAmount);
+            const depositeNumber = getInputNumber("depositAmount");
+           
 
-             const currentDeposit = document.getElementById("currentDeposit").innerText;
-             const currentDepositNumber = parseFloat(currentDeposit);
-             const totalDeposit= depositeNumber + currentDepositNumber;
+             updateSpanText("currentDeposit",depositeNumber);
 
-             document.getElementById("currentDeposit").innerText = totalDeposit;
+             updateSpanText("currentBalance",depositeNumber);
 
-             
-             
-            
+             document.getElementById("depositAmount").value = "";
             
         })
+
+        //widthdraw button even handaler
+        const widthdrawBtn = document.getElementById("addWidthdraw");
+        widthdrawBtn.addEventListener("click",function(){
+
+                    const widthdrawNumber = getInputNumber("widthdrawAmount");
+                    updateSpanText("currentWidthdraw",widthdrawNumber);
+                    updateSpanText("currentBalance",-1* widthdrawNumber);
+                    
+                    document.getElementById("widthdrawAmount").value ="";
+
+        })
+
+        function getInputNumber(id){
+
+                    const Amount = document.getElementById(id).value;
+                    const AmountNumber = parseFloat(Amount);
+                    return AmountNumber;
+        }
+
+        function updateSpanText(id,addedNumber){
+
+            
+             const current = document.getElementById(id).innerText;
+             const currentNumber = parseFloat(current);
+             const total = addedNumber + currentNumber;
+             document.getElementById(id).innerText = total;
+
+
+        }
+
     </script>
 </body>
 </html>
